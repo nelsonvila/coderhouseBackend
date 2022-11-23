@@ -10,3 +10,4 @@ Tener instalado [NodeJS](https://nodejs.org/en/download/)]
 2. Clase 02: Principios básicos de JavaScript
 3. Clase 03: Programación sincrónica y asincrónica
 4. Clase 04: Manejo de Archivos en Javascript
+5. Clase 05: Administradores de Paquetes - NPM
