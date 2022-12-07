@@ -9,17 +9,19 @@
 <body>
     
     <h2>Ingresar Mascotas</h2>
-    <form action="http://localhost:8080/mascota/guardar" method="POST">
+    <form action="http://localhost:8080/mascota/guardar" enctype="multipart/form-data" method="POST">
         Nombre: <input type="text" name="nombre">
         Raza: <input type="text" name="raza">
         edad: <input type="text" name="edad">
+        Imagen <input type="file" name="fileMascota" accept="image/jpeg" multiple>
         <button type="submit">Enviar</button>
     </form>
     <h2>Ingresar Personas</h2>
-    <form action="http://localhost:8080/persona/guardar" method="POST">
+    <form action="http://localhost:8080/persona/guardar" enctype="multipart/form-data" method="POST">
         Nombre: <input type="text" name="nombre">
         Apellido: <input type="text" name="apellido">
         edad: <input type="text" name="edad">
+        Foto <input type="file" name="filePersona" accept="image/jpeg">
         <button type="submit">Enviar</button>
     </form>
 </body>

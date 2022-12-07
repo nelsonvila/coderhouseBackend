@@ -6,9 +6,33 @@ Persona -> { "nombre": ..., "apellido": ..., "edad":... }
 Mascota -> { "nombre":..., "raza":..., "edad":... }
 */
 const express = require('express')
+const multer = require('multer')
+
 const app = express()
 
 app.use(express.static('public'))
+
+//Multer config
+const storageMascota = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "images/mascota")
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
+
+const storagePersona = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "images/persona")
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
+
+const uploadMascota = multer({ storage: storageMascota })
+const uploadPersona = multer({ storage: storagePersona })
 
 const routePersona = express.Router()
 const routeMascota = express.Router()
@@ -27,8 +51,14 @@ routeMascota.get('/listar', (req, res) => {
     res.json(mascotas)
 })
 
-routeMascota.post('/guardar', (req, res) => {
-    console.log(req)
+routeMascota.post('/guardar', uploadMascota.array('fileMascota', 12
+), (req, res, next) => {
+    const files = req.files
+    if (!files) {
+        const error = new Error('Error al subir imagen')
+        error.httpstatusCode = 400
+        return next(error)
+    }
     mascotas.push(req.body)
     res.json(mascotas)
 })
@@ -39,8 +69,13 @@ routePersona.get('/listar', (req, res) => {
     res.json(personas)
 })
 
-routePersona.post('/guardar', (req, res) => {
-    console.log(res.body)
+routePersona.post('/guardar', uploadPersona.single('filePersona'), (req, res, next) => {
+    const file = req.file
+    if (!file) {
+        const error = new Error('Error al subir imagen')
+        error.httpstatusCode = 400
+        return next(error)
+    }
     personas.push(req.body)
     res.json(personas)
 })
