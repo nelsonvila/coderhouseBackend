@@ -1,0 +1,27 @@
+<%- include('./encabezado')-%>
+ <body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 style="color: blue;"> Ingresar datos</h1>
+            <br>
+            <form action="/datos" method="post">
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input id="nombre" class="form-control" type="text" name="nombre">
+                </div>
+                <div class="form-group">
+                    <label>Apellido</label>
+                    <input id="apellido" class="form-control" type="text" name="apellido">
+                </div>
+                <div class="form-group">
+                    <label>Edad</label>
+                    <input id="edad" class="form-control" type="number" name="edad">
+                </div>
+                <button class="btn btn-success mt-3 mb-5">Enviar</button>
+            </form>
+            <h2 style="color:red">Historial</h2>
+            <%- include('./tabla')-%>
+        </div>
+    </div>
+ </body>
+ </html>
