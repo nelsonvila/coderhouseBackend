@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-5">Agregar Cookie</h2>
+        <form id="form-cookies">
+            <div class="form-group">
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de la cookie">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="valor" name="valor" placeholder="Valor de la cookie">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="tiempo" name="tiempo"
+                    placeholder="Tiempo de vida en segundos">
+            </div>
+            <button type="submit" class="btn btn-primary">Crear cookie</button>
+        </form>
+        <br>
+        <h2 class="text-center mb-5">Tabla de Cookies</h2>
+        <table id="cookiesTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Valor</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody id="cookiesBody">
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <button class="btn btn-secondary" onclick="updateCookies()">Actualizar</button>
+        <br>
+        <br>
+        <h2 class="text-center mb-5">Eliminar Cookie por nombre</h2>
+        <div class="form-group">
+            <label for="nombreCookie">Nombre de la cookie:</label>
+            <input type="text" class="form-control" id="nombreCookie" name="nombreCookie">
+        </div>
+        <button type="button" class="btn btn-danger" id="eliminarCookie" onclick="deleteCookies()">Eliminar cookie
+        </button>
+    </div>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+    <script>
+        const form = document.getElementById('form-cookies')
+
+        form.onsubmit = async event => {
+            event.preventDefault()
+            const nombre = document.getElementById('nombre').value
+            const valor = document.getElementById('valor').value
+            const tiempo = document.getElementById('tiempo').value
+
+            const respuesta = await fetch('http://localhost:8080/cookies', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre, valor, tiempo }),
+            })
+
+            if (respuesta.ok) {
+                console.log('Cookie creada')
+                clearFormFields()
+                updateCookies()
+            } else {
+                console.error('Error al crear la cookie')
+            }
+        }
+
+        async function updateCookies() {
+                const res = await fetch("http://localhost:8080/cookies");
+                const cookies = await res.json();
+                console.log(cookies)
+                const cookiesBody = document.getElementById("cookiesBody");
+                cookiesBody.innerHTML = "";
+                if (cookies.normales) {
+                for (const cookieName in cookies.normales) {
+                    console.log("value n: ", cookies.normales[cookieName])
+                    const tr = document.createElement("tr");
+                    const tdName = document.createElement("td");
+                    tdName.textContent = cookieName;
+                    tr.appendChild(tdName);
+                    const tdValue = document.createElement("td");
+                    tdValue.textContent = cookies.normales[cookieName];
+                    tr.appendChild(tdValue);
+                    const tdTipo = document.createElement("td");
+                    tdTipo.textContent = "normales"
+                    tr.appendChild(tdTipo);
+                    cookiesBody.appendChild(tr);
+                }
+            }
+                if (cookies.firmadas) {
+                    for (const cookieName in cookies.firmadas) {
+                        const tr = document.createElement("tr");
+                        const tdName = document.createElement("td");
+                        tdName.textContent = cookieName;
+                        tr.appendChild(tdName);
+                        const tdValue = document.createElement("td");
+                        tdValue.textContent = cookies.firmadas[cookieName];
+                        tr.appendChild(tdValue);
+                        const tdTipo = document.createElement("td");
+                        tdTipo.textContent = "firmadas"
+                        tr.appendChild(tdTipo);
+                        cookiesBody.appendChild(tr);
+                    }
+                }
+                
+            }
+            async function deleteCookies() {
+                    const nombre = document.getElementById("nombreCookie").value;
+                    if (!nombre) {
+                        alert("Ingresa el nombre de la cookie a eliminar");
+                        return;
+                    }
+                    const res = await fetch(`http://localhost:8080/cookies/${nombre}`, {
+                        method: "DELETE"
+                    })
+                    const data = await res.json
+                    console.log("data:", data)
+                     if (data.error) {
+                        alert(data.error);
+                        } else {
+                         alert("Cookie eliminada correctamente");
+                         updateCookies()
+                     }               
+            }
+            async function clearFormFields() {
+                    document.getElementById("valor").value = "";
+                    document.getElementById("nombre").value = "";
+                    document.getElementById("tiempo").value = "";
+                }
+    </script>   
+</body>
+</html>
