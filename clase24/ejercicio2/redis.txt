@@ -1,0 +1,75 @@
+Poner en marcha el servidor de base de datos Redis, y conectar su cliente CLI.
+
+Realizar las siguientes tareas:
+1) Listar la información total en la base.
+2) Crear 5 claves sin tiempo de expiración que contengan nombres de productos.
+3) Listar nuevamente toda la información.
+4) Mostrar el contenido de cada una de las claves de productos.
+5) Agregar un producto más, fijando un tiempo de vida de 30 segundos.
+6) Listar el nuevo producto y su tiempo de expiración.
+7) Verificar que al transcurrir ese tiempo, el producto desaparezca del listado general.
+
+
+///Solucion
+127.0.0.1:6379> keys *
+(empty list or set)
+127.0.0.1:6379> set producto1 "mesa"
+OK
+127.0.0.1:6379> set producto2 "silla"
+OK
+127.0.0.1:6379> set producto3 "armario"
+OK
+127.0.0.1:6379> set producto4 "lampara"
+OK
+127.0.0.1:6379> set producto5 "perchero"
+OK
+127.0.0.1:6379> keys *
+1) "producto3"
+2) "producto4"
+3) "producto1"
+4) "producto5"
+5) "producto2"
+127.0.0.1:6379> get producto1
+"mesa"
+127.0.0.1:6379> get producto2
+"silla"
+127.0.0.1:6379> get producto3
+"armario"
+127.0.0.1:6379> get producto4
+"lampara"
+127.0.0.1:6379> get producto5
+"perchero"
+127.0.0.1:6379> set producto6 "televisor" EX 30
+OK
+127.0.0.1:6379> get producto6
+"televisor"
+127.0.0.1:6379> keys *
+1) "producto3"
+2) "producto4"
+3) "producto1"
+4) "producto6"
+5) "producto5"
+6) "producto2"
+127.0.0.1:6379> TTL producto6
+(integer) 17
+127.0.0.1:6379> TTL producto6
+(integer) 12
+127.0.0.1:6379> TTL producto6
+(integer) 11
+127.0.0.1:6379> TTL producto6
+(integer) 6
+127.0.0.1:6379> TTL producto6
+(integer) 4
+127.0.0.1:6379> TTL producto6
+(integer) 3
+127.0.0.1:6379> TTL producto6
+(integer) 2
+127.0.0.1:6379> TTL producto6
+(integer) 1
+127.0.0.1:6379> keys *
+1) "producto3"
+2) "producto4"
+3) "producto1"
+4) "producto5"
+5) "producto2"
+127.0.0.1:6379>
