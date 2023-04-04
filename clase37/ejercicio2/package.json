@@ -1,0 +1,11 @@
+{
+  "name": "suma-nelson",
+  "version": "1.0.0",
+  "description": "paqueta para realizar operaciones",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nelson Vila",
+  "license": "ISC"
+}
