@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Obtener Frases</title>
+  </head>
+  <body>
+    <button onclick="getFrase()">Obtener frases</button>
+    <br />
+    <button onclick="sendPalabra()">Enviar palabra</button>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </body>
+
+  <script>
+    function getFrase(params) {
+      axios
+        .get("http://localhost:8080/palabras/")
+        .then((response) => console.log(response.data))
+        .catch((error) => console.error(error));
+    }
+
+    function sendPalabra() {
+      axios
+        .post("http://localhost:8080/palabras/", {
+          palabra: "Palabra desde front",
+        })
+        .then((response) => console.log(response.data))
+        .catch((error) => console.error(error));
+    }
+  </script>
+</html>
