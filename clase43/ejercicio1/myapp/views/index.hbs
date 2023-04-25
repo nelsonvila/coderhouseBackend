@@ -1,0 +1,17 @@
+<h1>{{title}}</h1>
+<p>Ingrese {{title}}</p>
+
+<hr>
+
+<form action="/api/productos" method="post">
+    <div>
+        <label>Nombre</label>
+        <input type="text" id="nombre" name="nombre">
+    </div>
+
+    <div>
+        <label>Precio</label>
+        <input type="text" id="precio" name="precio">
+    </div>
+    <button>Enviar</button>
+</form>
